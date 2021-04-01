@@ -1,4 +1,4 @@
-import uvicorn
-
-if __name__ == "__main__":
-    uvicorn.run("server.app:app", host="0.0.0.0", port=8000, reload=True)
+# based on both
+# https://github.com/markqiu/fastapi-mongodb-realworld-example-app
+# and
+# https://github.com/nsidnev/fastapi-realworld-example-app

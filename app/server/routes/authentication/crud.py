@@ -1,6 +1,6 @@
-import app.server.documents.user as mongo_user
+import server.documents as documents
 
-async def add_user(user: mongo_user):
-  user = await user.save()
-  return user
-
+# Get User by Username
+def get_user(username_in: str):
+    for user in documents.user.User.objects:
+        print(user.username)
