@@ -35,4 +35,7 @@ ALLOWED_HOSTS: List[str] = config(
   default="",
 )
 
+database_name = MONGO_DB
+user_collection_name = "users"
+
 ## Could Add Logging (See FASTAPI RWE)
