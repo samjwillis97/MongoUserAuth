@@ -9,6 +9,7 @@ API_PREFIX = "/api"
 VERSION = "1.0.0"
 
 JWT_TOKEN_PREFIX = "Token"
+ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 config = Config(".env")
