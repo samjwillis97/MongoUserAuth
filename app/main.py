@@ -8,11 +8,10 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from starlette.middleware.cors import CORSMiddleware
 
-from api.errors.http_error import http_error_handler
-from api.errors.validation_error import http422_error_handler
-from api.routes.api import router as api_router
-from core.config import ALLOWED_HOSTS, API_PREFIX, DEBUG, PROJECT_NAME, VERSION
-from core.events import connect_to_mongo, close_mongo_connection
+from .api.api import router as api_router
+from .core.errors import http_error_handler, http422_error_handler
+from .core.config import ALLOWED_HOSTS, API_PREFIX, DEBUG, PROJECT_NAME, VERSION
+from .core.events import connect_to_mongo, close_mongo_connection
 
 
 def get_application() -> FastAPI:

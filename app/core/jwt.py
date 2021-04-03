@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from .mongodb import AsyncIOMotorClient, get_database
 from .config import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM
 from ..services.users import get_user
-from ..models.schemas.token import Token
+from ..models.schemas.token import TokenData
 from ..models.schemas.users import User
 
 from fastapi import Depends, HTTPException, status
@@ -47,7 +47,7 @@ async def _get_current_user(
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
-        token_data = Token(username=username)
+        token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
     dbuser = await get_user(db, token_data.username)
