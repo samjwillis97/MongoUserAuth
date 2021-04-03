@@ -16,7 +16,7 @@ async def login_for_access_token(
         db: AsyncIOMotorClient = Depends(get_database)):
     # Get User by username
     # If not User or authenticate
-    user = get_user(db, form_data.username)
+    user = await get_user(db, form_data.username)
     if not user or not user.check_password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -28,3 +28,5 @@ async def login_for_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return {"access token": access_token, "token_type": "bearer"}
+
+# Register

@@ -12,7 +12,7 @@ JWT_TOKEN_PREFIX = "Token"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
-config = Config("app/.env")
+config = Config(".env")
 
 MAX_CONNECTIONS_COUNT: int = config(
     "MAX_CONNECTIONS_COUNT", cast=int, default=10)
