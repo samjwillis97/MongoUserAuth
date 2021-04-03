@@ -6,8 +6,8 @@ from pydantic import Schema
 
 
 class DateTimeModelMixin(BaseModel):
-    created_at: Optional[datetime] = Schema(..., alias="createdAt")
-    updated_at: Optional[datetime] = Schema(..., alias="updatedAt")
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class DBModelMixin(DateTimeModelMixin):

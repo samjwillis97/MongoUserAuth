@@ -8,6 +8,8 @@ from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
+from pprint import pprint
+
 router = APIRouter()
 
 @router.post("/", response_model=Token)
@@ -16,7 +18,9 @@ async def login_for_access_token(
         db: AsyncIOMotorClient = Depends(get_database)):
     # Get User by username
     # If not User or authenticate
+    pprint(form_data.username)
     user = await get_user(db, form_data.username)
+    pprint(user)
     if not user or not user.check_password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

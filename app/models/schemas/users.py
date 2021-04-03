@@ -12,7 +12,7 @@ from ...core.security import get_password_hash, verify_password
 
 class UserBase(Base):
     username: str
-    email: Optional[EmailStr]
+    email: EmailStr
     full_name: Optional[str]
 
 
