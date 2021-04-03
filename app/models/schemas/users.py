@@ -37,3 +37,8 @@ class UserUpdate(Base):
     email: Optional[str]
     password: Optional[str]
     full_name: Optional[str]
+
+class UserInResponse(Base):
+    username: str
+    email: Optional[str]
+    full_name: Optional[str]

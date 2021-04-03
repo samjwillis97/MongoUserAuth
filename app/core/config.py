@@ -33,7 +33,7 @@ if not MONGODB_URL:
     MONGODB_URL = f"mongodb://{MONGO_USER}:{MONGO_PASS}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}"
 
 
-SECRET_KEY: Secret = config("SECRET_KEY", cast=Secret)
+SECRET_KEY: Secret = config("SECRET_KEY", cast=str)
 
 PROJECT_NAME: str = config("PROJECT_NAME", default="Fast API Project")
 

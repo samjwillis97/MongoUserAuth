@@ -16,7 +16,7 @@ from jose import JWTError, jwt
 # _get_current_user_optional
 # get_current_user_authorizer
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/token")
 
 
 def create_access_token(
@@ -33,7 +33,7 @@ def create_access_token(
     return encoded_jwt
 
 
-async def _get_current_user(
+async def get_current_user(
     db: AsyncIOMotorClient = Depends(get_database),
     token: str = Depends(oauth2_scheme)
 ):
