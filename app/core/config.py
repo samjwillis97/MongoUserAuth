@@ -2,8 +2,19 @@ import os
 
 from typing import List
 
+# from functools import lru_cache
+# from pydantic import BaseSettings
+
 from starlette.config import Config
 from starlette.datastructures import CommaSeparatedStrings, Secret
+
+# class Settings (BaseSettings):
+#     class Config:
+#         env_file = ".env"
+
+# @lru_cache
+# def get_settings():
+#     return Settings()
 
 API_PREFIX = "/api"
 VERSION = "1.0.0"

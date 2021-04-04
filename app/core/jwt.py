@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from .mongodb import AsyncIOMotorClient, get_database
 from .config import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM
 from ..services.users import get_user
-from ..models.schemas.token import TokenData
+from ..models.schemas.auth import TokenData
 from ..models.schemas.users import User
 
 from fastapi import Depends, HTTPException, status
@@ -16,7 +16,7 @@ from jose import JWTError, jwt
 # _get_current_user_optional
 # get_current_user_authorizer
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth")
 
 
 def create_access_token(
@@ -44,13 +44,13 @@ async def get_current_user(
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        email: str = payload.get("sub")
+        if email is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(email=email)
     except JWTError:
         raise credentials_exception
-    dbuser = await get_user(db, token_data.username)
+    dbuser = await get_user(db, token_data.email)
     if dbuser is None:
         raise credentials_exception
     return User(**dbuser.dict(), token=token)

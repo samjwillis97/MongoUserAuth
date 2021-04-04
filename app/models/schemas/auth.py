@@ -1,9 +1,10 @@
-from typing import Optional
+from typing import Optional, List
 
 from .base import Base
 
 class TokenData(Base):
-    username: Optional[str] = None
+    email: Optional[str] = None
+    scopes: List[str] = []
 
 class Token(Base):
     access_token: str
