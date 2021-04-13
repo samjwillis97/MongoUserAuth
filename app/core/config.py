@@ -54,6 +54,7 @@ ALLOWED_HOSTS: List[str] = config(
     default="",
 )
 
+## FAST API DB
 database_name = "fastapi"
 user_collection_name = "users"
 
