@@ -23,6 +23,8 @@ async def create_user(conn: AsyncIOMotorClient, user: UserRegister) -> UserInDB:
     dbuser.created_at = datetime.now()
     dbuser.update_time()
 
+    # create refresh token, hash, store in db
+
     await conn[database_name][user_collection_name].insert_one(dbuser.dict())
 
     return dbuser
