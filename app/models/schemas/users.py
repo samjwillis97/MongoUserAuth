@@ -7,20 +7,21 @@ from .base import Base
 from .db import DateTimeModelMixin, MongoModel, OID
 from ...core.security import get_password_hash, verify_password
 
+## NEED TO REVISE MODELS
+# UserLogin
+# UserRegister
+# UserUpdate
+# UserInDB
+# UserInResponse
 
 class UserBase(MongoModel):
-    id: OID = Field()
     email: EmailStr
     is_active: bool = True
     is_superuser: bool = False
     permissions: List[str] = []
 
-
-class UserInDB(DateTimeModelMixin, UserBase):
+class UserCreate(DateTimeModelMixin, UserBase):
     hashed_password: str = ""
-
-    def check_password(self, password: str):
-        return verify_password(password, self.hashed_password)
 
     def update_password(self, password: str):
         self.hashed_password = get_password_hash(password)
@@ -29,7 +30,18 @@ class UserInDB(DateTimeModelMixin, UserBase):
         self.updated_at = datetime.now()
 
 
+class UserInDB(DateTimeModelMixin, UserBase):
+    id: OID = Field()
+    hashed_password: str = ""
+
+    def check_password(self, password: str):
+        return verify_password(password, self.hashed_password)
+
+    def update_time(self):
+        self.updated_at = datetime.now()
+
 class User(UserBase):
+    id: OID = Field()
     token: str
 
 
@@ -43,11 +55,11 @@ class UserRegister(UserLogin):
 
 
 class UserUpdate(Base):
-    email: Optional[EmailStr]
+    # email: Optional[EmailStr]
     password: Optional[str]
 
 class UserSuperUpdate(Base):
-    email: Optional[EmailStr]
+    # email: Optional[EmailStr]
     is_active: Optional[bool]
     is_superuser: Optional[bool]
     permissions: Optional[List[str]]

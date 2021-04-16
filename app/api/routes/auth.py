@@ -12,15 +12,16 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
 
-### AUTH ROUTER
-## POST - /login
+# AUTH ROUTER
+# POST - /login
 # Request: Login Form (User + Pass)
 # Response: access_token + token_type
 
-### REGISTER ROUTER
-## POST - /register
+# REGISTER ROUTER
+# POST - /register
 # Request: Login (User + Pass)
 # Response: id? + email + is_active + is_superuser
+
 
 @router.post("/login", response_model=Token)
 async def login_for_access_token(
@@ -45,6 +46,8 @@ async def login_for_access_token(
 # )
 
 # Would prefer to return new token
+
+
 @router.post("/register", status_code=201, response_model=UserBase)
 async def register_user(
         form_data: UserRegister,
