@@ -35,13 +35,11 @@ def read_current_user(current_user: User = Depends(get_current_user)):
 
 @router.patch(
     "/me",
-    # response_model=UserInResponse
+    response_model=UserInResponse
 )
 async def update_current_user(
         form_data: UserUpdate,
         current_user: User = Depends(get_current_user),
         db: AsyncIOMotorClient = Depends(get_database)):
-    pprint(current_user)
-    pprint(form_data)
-    await update_user(db, current_user, UserSuperUpdate(**form_data.dict()))
-    # return user
+    updated_user = await update_user(db, current_user, UserSuperUpdate(**form_data.dict()))
+    return updated_user
