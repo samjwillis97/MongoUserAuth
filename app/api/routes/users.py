@@ -23,8 +23,6 @@ router = APIRouter()
 
 superUserCheck = PermissionChecker(["superuser"])
 
-# Get users/ for super
-
 
 @router.get(
     "/",
@@ -50,7 +48,7 @@ async def update_current_user(
         form_data: UserUpdate,
         current_user: User = Depends(get_current_user),
         db: AsyncIOMotorClient = Depends(get_database)):
-    updated_user = await update_user(db, current_user, UserSuperUpdate(**form_data.dict()))
+    updated_user = await update_user(db, current_user.email, UserSuperUpdate(**form_data.dict()))
     return updated_user
 
 
@@ -70,11 +68,24 @@ async def delete_current_user(
     "/{email}",
     response_model=UserInResponse
 )
-async def get_user_by_email(
+async def get_a_user(
         email: str,
         current_user: User = Depends(superUserCheck),
         db: AsyncIOMotorClient = Depends(get_database)):
     return await read_user_by_email(db, email)
+
+
+@router.patch(
+    "/{email}",
+    response_model=UserInResponse
+)
+async def update_a_user(
+        email: str,
+        form_data: UserSuperUpdate,
+        current_user: User = Depends(superUserCheck),
+        db: AsyncIOMotorClient = Depends(get_database)):
+    updated_user = await update_user(db, email, form_data)
+    return updated_user
 
 
 @router.delete(
@@ -82,7 +93,7 @@ async def get_user_by_email(
     status_code=204,
     response_class=Response
 )
-async def delete_user(
+async def delete_a_user(
         email: str,
         current_user: User = Depends(superUserCheck),
         db: AsyncIOMotorClient = Depends(get_database)):

@@ -42,8 +42,12 @@ async def create_user(conn: AsyncIOMotorClient, user: UserRegister) -> UserInDB:
     return dbuser
 
 
-async def update_user(conn: AsyncIOMotorClient, user: User, form_data: UserSuperUpdate) -> UserInDB:
-    user_to_update = await get_user(conn, user.email)
+async def update_user(conn: AsyncIOMotorClient, email: str, form_data: UserSuperUpdate) -> UserInDB:
+    # check if user exists
+    user_to_update = await get_user(conn, email)
+    if user_to_update is None:
+        raise HTTPException(status_code=404, detail=USER_NOT_FOUND)
+
     user_to_update.update_time()
 
     user_updates = form_data.dict(skip_defaults=True)
@@ -58,7 +62,7 @@ async def update_user(conn: AsyncIOMotorClient, user: User, form_data: UserSuper
     updated_user = user_to_update | user_updates
 
     await conn[database_name][user_collection_name].update_one(
-        {'_id': user.id},
+        {'_id': user_to_update_id},
         {'$set': updated_user}
     )
 
