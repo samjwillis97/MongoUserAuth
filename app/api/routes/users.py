@@ -55,6 +55,12 @@ async def update_current_user(
     return updated_user
 
 
+@router.delete(
+    "/me",
+    status_code=204
+)
+
+
 @router.get(
     "/{email}",
     response_model=UserInResponse
@@ -64,3 +70,4 @@ async def get_user_by_email(
         current_user: User = Depends(superUserCheck),
         db: AsyncIOMotorClient = Depends(get_database)):
     return await read_user_by_email(db, email)
+
