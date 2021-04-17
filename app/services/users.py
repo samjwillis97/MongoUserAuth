@@ -16,6 +16,15 @@ async def get_user(conn: AsyncIOMotorClient, email: str) -> UserInDB:
     if row:
         return UserInDB(**row, id=row["_id"])
 
+def get_all_users(conn: AsyncIOMotorClient):
+    users = []
+    user_db = conn[database_name][user_collection_name]
+    
+    for document in user_db.find():
+        users.append(document)
+
+    pprint(users)
+    return users
 
 async def create_user(conn: AsyncIOMotorClient, user: UserRegister) -> UserInDB:
     dbuser = UserCreate(**user.dict())
@@ -61,3 +70,10 @@ async def check_email_is_taken(conn: AsyncIOMotorClient, email: str):
     if row:
         return True
     return False
+
+# return user of 403?
+# async def check_superuser(conn:AsyncIOMotorClient, email:str):
+#     row = await conn[database_name][user_collection_name].find_one(
+#         {"email": email}
+#     )
+#     return row["is_superuser"]

@@ -7,15 +7,6 @@ router = APIRouter()
 
 # SEE https://frankie567.github.io/fastapi-users/usage/routes/
 
-### AUTH ROUTER
-## POST - /login
-# Request: Login Form (User + Pass)
-# Response: access_token + token_type
-
-### REGISTER ROUTER
-## POST - /register
-# Request: Login (User + Pass)
-# Response: id? + email + is_active + is_superuser
 
 ### RESET ROUTER
 ## POST - /forgot-password
@@ -46,8 +37,6 @@ router = APIRouter()
 # Response: id? + email + is_active + is_superuser, 401, 403, 404
 ## DELET - /{user_id}
 # Response: id? + email + is_active + is_superuser, 401, 403, 404
-
-
 
 router.include_router(auth_router, tags=["auth"], prefix="/auth")
 router.include_router(users_router, tags=["users"], prefix="/users")
