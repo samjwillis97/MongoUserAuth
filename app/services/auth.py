@@ -14,19 +14,13 @@ class PermissionChecker:
 
     async def __call__(self, user: User = Depends(get_current_user)):
         if user.is_superuser:
-            pprint("SUperUser")
             return user
         if not self.permissions:
-            pprint("No Perms")
             return user
-
-        pprint((user.permissions))
-        pprint((self.permissions))
-        pprint(set(user.permissions) & set(self.permissions))
         
-        if (set(user.permissions) & set(self.permissions)) is None:
-            pprint("Exception")
+        if user.permissions == []:
+            raise HTTPException(status_code=403, detail=INCORRECT_PERMS)
+        elif (set(user.permissions).intersection(set(self.permissions))) == set():
             raise HTTPException(status_code=403, detail=INCORRECT_PERMS)
         else:
-            pprint("Has Perms")
             return user

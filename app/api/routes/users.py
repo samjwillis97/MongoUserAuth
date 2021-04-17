@@ -2,7 +2,7 @@ from ...models.schemas.users import UserInResponse, User, UserUpdate, UserSuperU
 from ...core.config import ACCESS_TOKEN_EXPIRE_MINUTES
 from ...core.mongodb import AsyncIOMotorClient, get_database
 from ...core.jwt import get_current_user
-from ...services.users import get_user, update_user, get_all_users
+from ...services.users import get_user, update_user, get_all_users, read_user_by_email
 from ...services.auth import PermissionChecker
 
 from datetime import timedelta
@@ -14,13 +14,6 @@ from pprint import pprint
 
 
 # USERS ROUTER
-# GET - /me
-# Response: id? + email + is_active + is_superuser
-# PATCH - /me (if email change, logout, re login)
-# Request: Email + Pass
-# Response: id? + email + is_active + is_superuse
-# GET - /{user_id}
-# Response: id? + email + is_active + is_superuser, 401, 403, 404
 # PATCH - /{user_id}
 # Request: email + password + is_active + is_superuse
 # Response: id? + email + is_active + is_superuser, 401, 403, 404
@@ -29,17 +22,19 @@ from pprint import pprint
 
 router = APIRouter()
 
-permChecker = PermissionChecker(["super"])
+superUserCheck = PermissionChecker(["superuser"])
 
 # Get users/ for super
 
 
 @router.get(
     "/",
-    # response_model=List[UserInResponse]
+    response_model=List[UserInResponse]
 )
-def read_all_users(current_user: User = Depends(permChecker)):
-    users = get_all_users
+async def read_all_users(
+        current_user: User = Depends(superUserCheck),
+        db: AsyncIOMotorClient = Depends(get_database)):
+    users = await get_all_users(db)
     return users
 
 
@@ -58,3 +53,14 @@ async def update_current_user(
         db: AsyncIOMotorClient = Depends(get_database)):
     updated_user = await update_user(db, current_user, UserSuperUpdate(**form_data.dict()))
     return updated_user
+
+
+@router.get(
+    "/{email}",
+    response_model=UserInResponse
+)
+async def get_user_by_email(
+        email: str,
+        current_user: User = Depends(superUserCheck),
+        db: AsyncIOMotorClient = Depends(get_database)):
+    return await read_user_by_email(db, email)
