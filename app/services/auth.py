@@ -8,6 +8,7 @@ from ..core.jwt import get_current_user
 
 from pprint import pprint
 
+
 class PermissionChecker:
     def __init__(self, permissions: Optional[List[str]]):
         self.permissions = permissions
@@ -17,7 +18,7 @@ class PermissionChecker:
             return user
         if not self.permissions:
             return user
-        
+
         if user.permissions == []:
             raise HTTPException(status_code=403, detail=INCORRECT_PERMS)
         elif (set(user.permissions).intersection(set(self.permissions))) == set():
