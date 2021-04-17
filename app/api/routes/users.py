@@ -14,11 +14,6 @@ from typing import List
 from pprint import pprint
 
 
-# USERS ROUTER
-# PATCH - /{user_id}
-# Request: email + password + is_active + is_superuse
-# Response: id? + email + is_active + is_superuser, 401, 403, 404
-
 router = APIRouter()
 
 superUserCheck = PermissionChecker(["superuser"])

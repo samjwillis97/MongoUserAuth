@@ -54,8 +54,10 @@ ALLOWED_HOSTS: List[str] = config(
     default="",
 )
 
-## FAST API DB
-database_name = "fastapi"
-user_collection_name = "users"
+USER_DATABASE_NAME: str = config("USER_DATABASE_NAME", default="fastapi")
+USER_COLLECTION_NAME: str = config("USER_COLLECTION_NAME", default="users")
+
+NEMWEB_DATABASE_NAME: str = config("NEMWEB_DATABASE_NAME", default="testing")
+NEMWEB_COLLECTION_NAME: str = config("NEMWEB_COLLECTION_NAME", default="nemweb")
 
 # Could Add Logging (See FASTAPI RWE)

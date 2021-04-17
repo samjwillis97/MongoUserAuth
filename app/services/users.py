@@ -7,12 +7,12 @@ from fastapi.exceptions import HTTPException
 from ..resources.strings import USER_NOT_FOUND
 from ..core.mongodb import AsyncIOMotorClient
 from ..core.security import get_password_hash
-from ..core.config import database_name, user_collection_name
+from ..core.config import USER_COLLECTION_NAME, USER_DATABASE_NAME
 from ..models.schemas.users import UserCreate, UserLogin, UserInDB, UserSuperUpdate, UserRegister, User, UserInResponse
 
 
 async def get_user(conn: AsyncIOMotorClient, email: str) -> UserInDB:
-    row = await conn[database_name][user_collection_name].find_one(
+    row = await conn[USER_DATABASE_NAME][USER_COLLECTION_NAME].find_one(
         {"email": email}
     )
     if row:
@@ -21,7 +21,7 @@ async def get_user(conn: AsyncIOMotorClient, email: str) -> UserInDB:
 
 async def get_all_users(conn: AsyncIOMotorClient):
     users = []
-    user_collection = conn[database_name][user_collection_name]
+    user_collection = conn[USER_DATABASE_NAME][USER_COLLECTION_NAME]
 
     async for document in user_collection.find({}):
         users.append(UserInResponse(**document))
@@ -37,7 +37,7 @@ async def create_user(conn: AsyncIOMotorClient, user: UserRegister) -> UserInDB:
 
     # create refresh token, hash, store in db??
 
-    await conn[database_name][user_collection_name].insert_one(dbuser.dict())
+    await conn[USER_DATABASE_NAME][USER_COLLECTION_NAME].insert_one(dbuser.dict())
 
     return dbuser
 
@@ -61,7 +61,7 @@ async def update_user(conn: AsyncIOMotorClient, email: str, form_data: UserSuper
 
     updated_user = user_to_update | user_updates
 
-    await conn[database_name][user_collection_name].update_one(
+    await conn[USER_DATABASE_NAME][USER_COLLECTION_NAME].update_one(
         {'_id': user_to_update_id},
         {'$set': updated_user}
     )
@@ -72,7 +72,7 @@ async def update_user(conn: AsyncIOMotorClient, email: str, form_data: UserSuper
 
 
 async def check_email_is_taken(conn: AsyncIOMotorClient, email: str):
-    row = await conn[database_name][user_collection_name].find_one(
+    row = await conn[USER_DATABASE_NAME][USER_COLLECTION_NAME].find_one(
         {"email": email}
     )
     if row:
@@ -81,7 +81,7 @@ async def check_email_is_taken(conn: AsyncIOMotorClient, email: str):
 
 
 async def read_user_by_email(conn: AsyncIOMotorClient, email: str):
-    row = await conn[database_name][user_collection_name].find_one(
+    row = await conn[USER_DATABASE_NAME][USER_COLLECTION_NAME].find_one(
         {"email": email}
     )
     if row:
@@ -92,6 +92,6 @@ async def read_user_by_email(conn: AsyncIOMotorClient, email: str):
 
 
 async def delete_user_by_email(conn: AsyncIOMotorClient, email: str):
-    deleted = await conn[database_name][user_collection_name].find_one_and_delete({'email': email})
+    deleted = await conn[USER_DATABASE_NAME][USER_COLLECTION_NAME].find_one_and_delete({'email': email})
     if deleted is None:
         raise HTTPException(status_code=404, detail=USER_NOT_FOUND)
