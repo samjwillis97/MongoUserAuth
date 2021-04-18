@@ -34,7 +34,7 @@ async def get_current_unit_loads(conn: AsyncIOMotorClient, units: List[str]):
 
     # Querying Database
     documents = conn[NEMWEB_DATABASE_NAME][NEMWEB_COLLECTION_NAME].find(
-        sort=[("time", 1)],
+        sort=[("time", -1)],
         limit=1,
         projection=projection
     )
