@@ -60,4 +60,7 @@ USER_COLLECTION_NAME: str = config("USER_COLLECTION_NAME", default="users")
 NEMWEB_DATABASE_NAME: str = config("NEMWEB_DATABASE_NAME", default="testing")
 NEMWEB_COLLECTION_NAME: str = config("NEMWEB_COLLECTION_NAME", default="nemweb")
 
+BEARING_DATABASE_NAME: str = config("BEARING_DATABASE_NAME", default="fastapi")
+BEARING_COLLECTION_NAME: str = config("BEARING_COLLECTION_NAME", default="bearings")
+
 # Could Add Logging (See FASTAPI RWE)

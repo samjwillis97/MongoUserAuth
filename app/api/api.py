@@ -25,21 +25,30 @@ router = APIRouter()
 # Request: token ^
 # Response: 200, 422, 400
 
-### USERS ROUTER
-## GET - /me
-# Response: id? + email + is_active + is_superuser
-## PATCH - /me
-# Request: Email + Pass
-# Response: id? + email + is_active + is_superuse
-## GET - /{user_id}
-# Response: id? + email + is_active + is_superuser, 401, 403, 404
-## PATCH - /{user_id}
-# Request: email + password + is_active + is_superuse
-# Response: id? + email + is_active + is_superuser, 401, 403, 404
-## DELET - /{user_id}
-# Response: id? + email + is_active + is_superuser, 401, 403, 404
+### Bearing Faults
+## GET - / 
+# Request: elements, manufacturer, bearing, greater, less
+# Response: List[faults]
+
+### TDMS Upload
+
+### Modems
+## GET - /
+# Request:
+# Response:
+## POST - /
+# Request:
+# Response:
+## GET - /{modem_id}
+# Request:
+# Response:
+## PATCH - /{modem_id}
+# Request: 
+# Response:
+## DELETE - /{modem_id}
+# Request:
+# Response:
 
 router.include_router(auth_router, tags=["auth"], prefix="/auth")
 router.include_router(users_router, tags=["users"], prefix="/users")
 router.include_router(nemweb_router, tags=["nemweb"], prefix="/nemweb")
-# router.include_router(users, tags=["users"], prefix="/user")
