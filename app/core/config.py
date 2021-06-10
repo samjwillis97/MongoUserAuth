@@ -1,20 +1,8 @@
 import os
 
 from typing import List
-
-# from functools import lru_cache
-# from pydantic import BaseSettings
-
 from starlette.config import Config
 from starlette.datastructures import CommaSeparatedStrings, Secret
-
-# class Settings (BaseSettings):
-#     class Config:
-#         env_file = ".env"
-
-# @lru_cache
-# def get_settings():
-#     return Settings()
 
 API_PREFIX = "/api"
 VERSION = "1.0.0"
@@ -44,7 +32,7 @@ if not MONGODB_URL:
     MONGODB_URL = f"mongodb://{MONGO_USER}:{MONGO_PASS}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}"
 
 
-SECRET_KEY: Secret = config("SECRET_KEY", cast=str)
+SECRET_KEY: Secret = config("SECRET_KEY", cast=str, default="SECRET")
 
 PROJECT_NAME: str = config("PROJECT_NAME", default="Fast API Project")
 
